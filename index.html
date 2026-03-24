@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#F8F9FB">
+  <meta name="description" content="DClaw — AI Agent 移動控制台。管理裝置、技能、頻道與 Agent 配置。">
+  <title>DClaw Mobile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=14">
+</head>
+
+<body>
+  <!-- ===== LOGIN PAGE ===== -->
+  <div class="login-page" id="loginPage">
+    <div class="login-content">
+      <div class="login-logo">
+        <div class="login-logo-icon">
+          <video autoplay loop muted playsinline class="login-logo-video">
+            <source src="landing_dori_hi.webm" type="video/webm">
+          </video>
+        </div>
+      </div>
+      <h1 class="login-app-name">DClaw</h1>
+      <p class="login-tagline" data-i18n="loginTagline">隨時隨地管理您的個人AI助手</p>
+      <button class="login-connect-btn" onclick="connectWallet()">
+        <span class="material-symbols-outlined" style="font-size:20px">account_balance_wallet</span>
+        <span data-i18n="connectWallet">連接錢包</span>
+      </button>
+    </div>
+    <div class="login-footer"><span data-i18n="poweredBy">Powered by Community</span><br>Built on OpenClaw</div>
+  </div>
+
+  <div class="app" id="app" style="display:none">
+
+    <!-- ===== HEADER — Tab Only ===== -->
+    <header class="app-header" id="appHeader">
+      <div class="header-tabs">
+        <button class="header-tab" id="headerTabDevices" data-i18n="deviceList" onclick="switchHeaderTab('devices')">裝置列表</button>
+        <button class="header-tab active" id="headerTabCurrent" data-i18n="currentDevice" onclick="switchHeaderTab('current')">當前裝置</button>
+      </div>
+    </header>
+
+    <!-- ===== SCREEN: DCLAW HOME ===== -->
+    <div class="screens-wrap">
+    <div class="screen active" id="screen-dclaw">
+
+      <!-- Current Device View (Default) -->
+      <div class="home-body" id="viewCurrent">
+
+        <!-- Device Hero Card -->
+        <div class="device-hero fade-up" id="deviceHero">
+          <div class="device-hero-top">
+            <div class="device-hero-icon">
+              <span class="material-symbols-outlined">memory</span>
+            </div>
+            <div class="device-hero-info">
+              <div class="device-hero-name" id="heroDeviceName">#789</div>
+
+            </div>
+            <div id="heroStatusBadge">
+              <span class="dclaw-badge living">
+                <span class="living-dot"></span>
+                Living
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Skill Market -->
+        <div class="fade-up d1">
+          <div class="section-title-row">
+            <h2 class="section-title" data-i18n="skillMarket">技能廣場</h2>
+            <button class="section-link" data-i18n="viewAll" onclick="goScreen('screen-agent');switchSubTab('agent','skills')">查看全部</button>
+          </div>
+          <div class="skill-grid" id="skillGrid">
+            <div class="skill-card">
+              <div class="skill-card-icon" style="background:rgba(34,197,94,.08)">
+                <span class="material-symbols-outlined" style="color:#22C55E">visibility</span>
+              </div>
+              <div class="skill-card-name">browser_visible</div>
+              <span class="skill-card-tag">Enabled</span>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card-icon" style="background:rgba(99,102,241,.08)">
+                <span class="material-symbols-outlined" style="color:#6366F1">calendar_clock</span>
+              </div>
+              <div class="skill-card-name">cron_scheduler</div>
+              <span class="skill-card-tag">Enabled</span>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card-icon" style="background:rgba(245,158,11,.08)">
+                <span class="material-symbols-outlined" style="color:#F59E0B">code</span>
+              </div>
+              <div class="skill-card-name">code_executor</div>
+              <span class="skill-card-tag">Enabled</span>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card-icon" style="background:rgba(236,72,153,.08)">
+                <span class="material-symbols-outlined" style="color:#EC4899">search</span>
+              </div>
+              <div class="skill-card-name">web_search</div>
+              <span class="skill-card-tag">Enabled</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tutorials -->
+        <div class="fade-up d2">
+          <div class="section-title-row">
+            <h2 class="section-title" data-i18n="tutorials">使用教程</h2>
+          </div>
+          <div class="tutorial-list">
+            <div class="tutorial-card">
+              <div class="tutorial-thumb" style="background:rgba(34,197,94,.1)">
+                <span class="material-symbols-outlined" style="color:#22C55E">rocket_launch</span>
+              </div>
+              <div class="tutorial-info">
+                <div class="tutorial-title" data-i18n="tutorial1Title">快速開始</div>
+                <div class="tutorial-desc" data-i18n="tutorial1Desc">3分鐘內完成首個Agent部署</div>
+              </div>
+              <span class="material-symbols-outlined tutorial-arrow">chevron_right</span>
+            </div>
+            <div class="tutorial-card">
+              <div class="tutorial-thumb" style="background:rgba(99,102,241,.1)">
+                <span class="material-symbols-outlined" style="color:#6366F1">extension</span>
+              </div>
+              <div class="tutorial-info">
+                <div class="tutorial-title" data-i18n="tutorial2Title">技能管理指南</div>
+                <div class="tutorial-desc" data-i18n="tutorial2Desc">如何配置與優化Agent技能鏈</div>
+              </div>
+              <span class="material-symbols-outlined tutorial-arrow">chevron_right</span>
+            </div>
+            <div class="tutorial-card">
+              <div class="tutorial-thumb" style="background:rgba(59,130,246,.1)">
+                <span class="material-symbols-outlined" style="color:#3B82F6">hub</span>
+              </div>
+              <div class="tutorial-info">
+                <div class="tutorial-title" data-i18n="tutorial3Title">頻道接入</div>
+                <div class="tutorial-desc" data-i18n="tutorial3Desc">將DClaw連接至您的社群平台</div>
+              </div>
+              <span class="material-symbols-outlined tutorial-arrow">chevron_right</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Device List View (hidden by default) -->
+      <div class="device-list-body hidden" id="viewDeviceList">
+        <div class="device-list" id="deviceListContainer">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SCREEN: CONTROL ===== -->
+    <div class="screen" id="screen-control">
+      <div class="sub-tabs-wrap">
+        <div class="sub-tabs" id="controlSubTabs">
+          <button class="sub-tab active" onclick="switchSubTab('control','channels')" data-i18n="channels">Channels</button>
+          <button class="sub-tab" onclick="switchSubTab('control','sessions')" data-i18n="sessions">Sessions</button>
+          <!-- <button class="sub-tab" onclick="switchSubTab('control','cronjobs')" data-i18n="cronJobs">Cron Jobs</button> -->
+          <button class="sub-tab" onclick="switchSubTab('control','heartbeat')" data-i18n="heartbeat">Heartbeat</button>
+        </div>
+      </div>
+      <div class="sub-body">
+        <!-- Channels -->
+        <div class="sub-page active" id="control-channels">
+          <div class="channel-card fade-up" onclick="openChannelModal('console')">
+            <div class="channel-icon" style="background:rgba(99,102,241,.1)">
+              <span class="material-symbols-outlined" style="color:#6366F1">terminal</span>
+            </div>
+            <div class="channel-info">
+              <div class="channel-name-row">
+                <span class="channel-name">Console</span>
+                <span class="ch-badge">Built-in</span>
+                <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              </div>
+              <div class="channel-meta">Bot Prefix: Not set</div>
+              <div class="channel-hint">Click card to edit</div>
+            </div>
+          </div>
+          <div class="channel-card fade-up d1" onclick="openChannelModal('dingtalk')">
+            <div class="channel-icon" style="background:rgba(59,130,246,.1)">
+              <span class="material-symbols-outlined" style="color:#3B82F6">send</span>
+            </div>
+            <div class="channel-info">
+              <div class="channel-name-row">
+                <span class="channel-name">DingTalk</span>
+                <span class="ch-badge">Built-in</span>
+                <span class="ch-status disabled"><span class="ch-dot disabled"></span> Disabled</span>
+              </div>
+              <div class="channel-meta">Bot Prefix: Not set</div>
+              <div class="channel-hint">Click card to edit</div>
+            </div>
+          </div>
+          <div class="channel-card fade-up d2" onclick="openChannelModal('feishu')">
+            <div class="channel-icon" style="background:rgba(34,197,94,.1)">
+              <span class="material-symbols-outlined" style="color:#22C55E">chat</span>
+            </div>
+            <div class="channel-info">
+              <div class="channel-name-row">
+                <span class="channel-name">Feishu</span>
+                <span class="ch-badge">Built-in</span>
+                <span class="ch-status disabled"><span class="ch-dot disabled"></span> Disabled</span>
+              </div>
+              <div class="channel-meta">Bot Prefix: Not set</div>
+              <div class="channel-hint">Click card to edit</div>
+            </div>
+          </div>
+          <div class="channel-card fade-up d3" onclick="openChannelModal('discord')">
+            <div class="channel-icon" style="background:rgba(88,101,242,.1)">
+              <span class="material-symbols-outlined" style="color:#5865F2">forum</span>
+            </div>
+            <div class="channel-info">
+              <div class="channel-name-row">
+                <span class="channel-name">Discord</span>
+                <span class="ch-badge">Built-in</span>
+                <span class="ch-status disabled"><span class="ch-dot disabled"></span> Disabled</span>
+              </div>
+              <div class="channel-meta">Bot Prefix: Not set</div>
+              <div class="channel-hint">Click card to edit</div>
+            </div>
+          </div>
+          <div class="channel-card fade-up d4" onclick="openChannelModal('telegram')">
+            <div class="channel-icon" style="background:rgba(0,136,204,.1)">
+              <span class="material-symbols-outlined" style="color:#0088CC">near_me</span>
+            </div>
+            <div class="channel-info">
+              <div class="channel-name-row">
+                <span class="channel-name">Telegram</span>
+                <span class="ch-badge">Built-in</span>
+                <span class="ch-status disabled"><span class="ch-dot disabled"></span> Disabled</span>
+              </div>
+              <div class="channel-meta">Bot Prefix: Not set</div>
+              <div class="channel-hint">Click card to edit</div>
+            </div>
+          </div>
+          <div class="channel-card fade-up d5" onclick="openChannelModal('qq')">
+            <div class="channel-icon" style="background:rgba(18,183,245,.1)">
+              <span class="material-symbols-outlined" style="color:#12B7F5">chat_bubble</span>
+            </div>
+            <div class="channel-info">
+              <div class="channel-name-row">
+                <span class="channel-name">QQ</span>
+                <span class="ch-badge">Built-in</span>
+                <span class="ch-status disabled"><span class="ch-dot disabled"></span> Disabled</span>
+              </div>
+              <div class="channel-meta">Bot Prefix: Not set</div>
+              <div class="channel-hint">Click card to edit</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sessions -->
+        <div class="sub-page" id="control-sessions">
+          <div class="session-list">
+            <div class="session-item fade-up">
+              <div class="session-avatar" style="background:rgba(99,102,241,.1);color:#6366F1">C</div>
+              <div class="session-info">
+                <div class="session-name">Can you te...</div>
+                <div class="session-id">default · 3 min ago</div>
+              </div>
+              <div class="session-actions">
+                <button class="btn-mini" onclick="openSessionModal('session1')"><span class="material-symbols-outlined">edit</span></button>
+                <button class="btn-mini danger"><span class="material-symbols-outlined">delete</span></button>
+              </div>
+            </div>
+            <div class="session-item fade-up d1">
+              <div class="session-avatar" style="background:rgba(34,197,94,.1);color:#22C55E">L</div>
+              <div class="session-info">
+                <div class="session-name">Let's star...</div>
+                <div class="session-id">default · 12 min ago</div>
+              </div>
+              <div class="session-actions">
+                <button class="btn-mini" onclick="openSessionModal('session2')"><span class="material-symbols-outlined">edit</span></button>
+                <button class="btn-mini danger"><span class="material-symbols-outlined">delete</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cron Jobs (hidden)
+        <div class="sub-page" id="control-cronjobs">
+          <div class="section-title-row mb-16">
+            <h2 class="section-title" data-i18n="cronJobs">Cron Jobs</h2>
+            <button class="create-btn"><span class="material-symbols-outlined" style="font-size:16px">add</span> <span data-i18n="create">建立</span></button>
+          </div>
+          <div class="cron-list">
+            <div class="cron-item fade-up">
+              <div class="cron-icon"><span class="material-symbols-outlined" style="color:#F59E0B">wb_twilight</span></div>
+              <div class="cron-info">
+                <div class="cron-name" data-i18n="dailyReport">每日早報推送</div>
+                <div class="cron-schedule">0 8 * * *</div>
+              </div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="cron-item fade-up d1">
+              <div class="cron-icon"><span class="material-symbols-outlined" style="color:#22C55E">verified_user</span></div>
+              <div class="cron-info">
+                <div class="cron-name" data-i18n="healthCheck">系統健康檢查</div>
+                <div class="cron-schedule">*/30 * * * *</div>
+              </div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+        </div>
+        -->
+
+        <!-- Heartbeat -->
+        <div class="sub-page" id="control-heartbeat">
+          <div class="form-card fade-up">
+            <div class="form-group">
+              <label class="form-label" data-i18n="enableHeartbeat">Enable Heartbeat</label>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="interval">Interval</label>
+              <div class="form-row">
+                <input class="form-input" type="number" value="6" min="1">
+                <select class="form-select">
+                  <option data-i18n="hours">Hours</option>
+                  <option data-i18n="minutes">Minutes</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="replyTarget">Reply Target</label>
+              <select class="form-select">
+                <option data-i18n="silentMode">Silent mode (default)</option>
+                <option data-i18n="lastChatChannel">Last chat channel</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="activeHours">Active Hours (optional)</label>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <button class="btn-primary" data-i18n="save">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SCREEN: AGENT ===== -->
+    <div class="screen" id="screen-agent">
+      <div class="sub-tabs-wrap">
+        <div class="sub-tabs" id="agentSubTabs">
+          <!-- <button class="sub-tab" onclick="switchSubTab('agent','workspace')" data-i18n="workspace">Workspace</button> -->
+          <button class="sub-tab active" onclick="switchSubTab('agent','skills')" data-i18n="skills">Skills</button>
+          <button class="sub-tab" onclick="switchSubTab('agent','tools')" data-i18n="tools">Tools</button>
+          <button class="sub-tab" onclick="switchSubTab('agent','mcp')" data-i18n="mcp">MCP</button>
+          <button class="sub-tab" onclick="switchSubTab('agent','configuration')" data-i18n="configuration">Configuration</button>
+        </div>
+      </div>
+      <div class="sub-body">
+        <!-- Workspace (hidden) -->
+        <!--
+        <div class="sub-page" id="agent-workspace">
+          <div class="section-title-row mb-16">
+            <h2 class="section-title" data-i18n="workspace">Workspace</h2>
+            <div style="display:flex;gap:8px">
+              <button class="btn-secondary"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:-3px">upload</span> <span data-i18n="upload">Upload</span></button>
+              <button class="btn-secondary"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:-3px">download</span> <span data-i18n="download">Download</span></button>
+            </div>
+          </div>
+          <div class="empty-state fade-up">
+            <div class="empty-icon"><span class="material-symbols-outlined">folder_open</span></div>
+            <div class="empty-text" data-i18n="noFilesInWorkspace">No files in workspace</div>
+          </div>
+        </div>
+        -->
+
+        <!-- Skills -->
+        <div class="sub-page active" id="agent-skills">
+          <div class="section-title-row mb-16">
+            <h2 class="section-title" data-i18n="skills">Skills</h2>
+            <div style="display:flex;gap:8px">
+              <button class="btn-secondary" onclick="openModal('importSkillModal')"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:-3px">download</span> <span data-i18n="importBtn">Import</span></button>
+              <button class="create-btn" onclick="openModal('createSkillModal')"><span class="material-symbols-outlined" style="font-size:16px">add</span> <span data-i18n="create">Create</span></button>
+            </div>
+          </div>
+          <div class="skill-detail-list" id="agentSkillGrid">
+            <div class="skill-detail-card fade-up">
+              <div class="skill-detail-header">
+                <div class="skill-detail-icon" style="background:rgba(34,197,94,.08)">
+                  <span class="material-symbols-outlined" style="color:#22C55E">visibility</span>
+                </div>
+                <span class="skill-detail-name">browser_visible</span>
+                <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Description</label>
+                <div class="skill-detail-box">當用戶希望打開真實可見的瀏覽器窗口（而非後台無頭模式）時，使用 browser_use 的 headed 參數啟動瀏覽器，隨後可正常 open/snapshot/click 等。</div>
+              </div>
+              <div class="skill-detail-field">
+                <label>Source</label>
+                <span class="ch-badge">builtin</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Path</label>
+                <div class="skill-detail-box mono">/root/.copaw/venv/lib/python3.12/site-packages/...</div>
+              </div>
+              <div class="skill-detail-footer">
+                <button class="skill-disable-btn">Disable</button>
+              </div>
+            </div>
+
+            <div class="skill-detail-card fade-up d1">
+              <div class="skill-detail-header">
+                <div class="skill-detail-icon" style="background:rgba(99,102,241,.08)">
+                  <span class="material-symbols-outlined" style="color:#6366F1">calendar_clock</span>
+                </div>
+                <span class="skill-detail-name">cron</span>
+                <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Description</label>
+                <div class="skill-detail-box">管理定時任務的建立、查詢、更新和刪除。支持 cron 表達式和自然語言描述。</div>
+              </div>
+              <div class="skill-detail-field">
+                <label>Source</label>
+                <span class="ch-badge">builtin</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Path</label>
+                <div class="skill-detail-box mono">/root/.copaw/venv/lib/python3.12/site-packages/...</div>
+              </div>
+              <div class="skill-detail-footer">
+                <button class="skill-disable-btn">Disable</button>
+              </div>
+            </div>
+
+            <div class="skill-detail-card fade-up d2">
+              <div class="skill-detail-header">
+                <div class="skill-detail-icon" style="background:rgba(59,130,246,.08)">
+                  <span class="material-symbols-outlined" style="color:#3B82F6">chat_bubble</span>
+                </div>
+                <span class="skill-detail-name">dingtalk_channel</span>
+                <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Description</label>
+                <div class="skill-detail-box">釘釘 Channel 自動連接（可視瀏覽器）。通過可視瀏覽器自動化完成釘釘應用創建與 CoPaw channel 綁定。</div>
+              </div>
+              <div class="skill-detail-field">
+                <label>Source</label>
+                <span class="ch-badge">builtin</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Path</label>
+                <div class="skill-detail-box mono">/root/.copaw/venv/lib/python3.12/site-packages/...</div>
+              </div>
+              <div class="skill-detail-footer">
+                <button class="skill-disable-btn">Disable</button>
+              </div>
+            </div>
+
+            <div class="skill-detail-card fade-up d3">
+              <div class="skill-detail-header">
+                <div class="skill-detail-icon" style="background:rgba(59,130,246,.08)">
+                  <span class="material-symbols-outlined" style="color:#3B82F6">description</span>
+                </div>
+                <span class="skill-detail-name">docx</span>
+                <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Description</label>
+                <div class="skill-detail-box">讀取和處理 .docx 文件內容，支持提取文本、表格和圖片元素。</div>
+              </div>
+              <div class="skill-detail-field">
+                <label>Source</label>
+                <span class="ch-badge">builtin</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Path</label>
+                <div class="skill-detail-box mono">/root/.copaw/venv/lib/python3.12/site-packages/...</div>
+              </div>
+              <div class="skill-detail-footer">
+                <button class="skill-disable-btn">Disable</button>
+              </div>
+            </div>
+
+            <div class="skill-detail-card fade-up d4">
+              <div class="skill-detail-header">
+                <div class="skill-detail-icon" style="background:rgba(245,158,11,.08)">
+                  <span class="material-symbols-outlined" style="color:#F59E0B">code</span>
+                </div>
+                <span class="skill-detail-name">code_executor</span>
+                <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Description</label>
+                <div class="skill-detail-box">在沙箱環境中執行 Python 代碼片段，返回標準輸出和錯誤信息。</div>
+              </div>
+              <div class="skill-detail-field">
+                <label>Source</label>
+                <span class="ch-badge">builtin</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Path</label>
+                <div class="skill-detail-box mono">/root/.copaw/venv/lib/python3.12/site-packages/...</div>
+              </div>
+              <div class="skill-detail-footer">
+                <button class="skill-disable-btn">Disable</button>
+              </div>
+            </div>
+
+            <div class="skill-detail-card fade-up d5">
+              <div class="skill-detail-header">
+                <div class="skill-detail-icon" style="background:rgba(236,72,153,.08)">
+                  <span class="material-symbols-outlined" style="color:#EC4899">search</span>
+                </div>
+                <span class="skill-detail-name">web_search</span>
+                <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Description</label>
+                <div class="skill-detail-box">使用搜索引擎檢索網頁信息，支持關鍵詞搜索和結果摘要提取。</div>
+              </div>
+              <div class="skill-detail-field">
+                <label>Source</label>
+                <span class="ch-badge">builtin</span>
+              </div>
+              <div class="skill-detail-field">
+                <label>Path</label>
+                <div class="skill-detail-box mono">/root/.copaw/venv/lib/python3.12/site-packages/...</div>
+              </div>
+              <div class="skill-detail-footer">
+                <button class="skill-disable-btn">Disable</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tools -->
+        <div class="sub-page" id="agent-tools">
+          <div class="section-title-row mb-16">
+            <h2 class="section-title" data-i18n="tools">Tools</h2>
+          </div>
+          <div class="tool-grid">
+            <div class="tool-card fade-up">
+              <div class="tool-icon"><span class="material-symbols-outlined">terminal</span></div>
+              <div class="tool-info"><div class="tool-name">execute_shell_command</div><div class="tool-desc" data-i18n="toolDescShell">Execute shell commands in sandbox</div></div>
+              <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="tool-card fade-up d1">
+              <div class="tool-icon"><span class="material-symbols-outlined">description</span></div>
+              <div class="tool-info"><div class="tool-name">read_file</div><div class="tool-desc" data-i18n="toolDescRead">Read contents from local file system</div></div>
+              <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="tool-card fade-up d2">
+              <div class="tool-icon"><span class="material-symbols-outlined">edit_note</span></div>
+              <div class="tool-info"><div class="tool-name">write_file</div><div class="tool-desc" data-i18n="toolDescWrite">Create new files with content</div></div>
+              <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="tool-card fade-up d3">
+              <div class="tool-icon"><span class="material-symbols-outlined">find_replace</span></div>
+              <div class="tool-info"><div class="tool-name">edit_file</div><div class="tool-desc" data-i18n="toolDescEdit">Modify existing files at specific lines</div></div>
+              <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="tool-card fade-up d4">
+              <div class="tool-icon"><span class="material-symbols-outlined">language</span></div>
+              <div class="tool-info"><div class="tool-name">browser_use</div><div class="tool-desc" data-i18n="toolDescBrowser">Automated web browsing and scraping</div></div>
+              <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="tool-card fade-up d5">
+              <div class="tool-icon"><span class="material-symbols-outlined">screenshot_monitor</span></div>
+              <div class="tool-info"><div class="tool-name">desktop_screenshot</div><div class="tool-desc" data-i18n="toolDescScreenshot">Capture system-level desktop images</div></div>
+              <span class="ch-status enabled"><span class="ch-dot enabled"></span> Enabled</span>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MCP -->
+        <div class="sub-page" id="agent-mcp">
+          <div class="section-title-row mb-16">
+            <h2 class="section-title" data-i18n="mcpClients">MCP Clients</h2>
+            <button class="create-btn" onclick="openModal('createMcpModal')"><span class="material-symbols-outlined" style="font-size:16px">add</span> <span data-i18n="create">Create</span></button>
+          </div>
+          <div class="mcp-card fade-up">
+            <div class="mcp-top">
+              <span class="material-symbols-outlined" style="font-size:20px;color:var(--accent-2)">dns</span>
+              <span class="mcp-name">tavily_mcp</span>
+              <span class="mcp-tag" data-i18n="local">Local</span>
+              <span class="mcp-status">● <span data-i18n="disabled">Disabled</span></span>
+            </div>
+            <div class="mcp-actions">
+              <button class="mcp-action-btn enable" data-i18n="enable">Enable</button>
+              <button class="mcp-action-btn danger"><span class="material-symbols-outlined" style="font-size:16px">delete</span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Configuration -->
+        <div class="sub-page" id="agent-configuration">
+          <div class="config-section fade-up">
+            <div class="config-section-title" data-i18n="reactAgent">ReAct Agent</div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="agentLanguage">Agent Language</label>
+              <select class="form-select">
+                <option>中文</option>
+                <option>English</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="userTimezone">User Timezone</label>
+              <select class="form-select">
+                <option>Etc/UTC</option>
+                <option>Asia/Taipei</option>
+                <option>Asia/Shanghai</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="maxIterations">Max Iterations</label>
+              <input class="form-input" type="number" value="50">
+            </div>
+          </div>
+          <div class="config-section fade-up d1">
+            <div class="config-section-title" data-i18n="contextManagement">Context Management</div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="maxInputLength">Max Input Length</label>
+              <input class="form-input" type="number" value="131072">
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span data-i18n="contextCompactRatio">Context Compact Ratio</span>: <strong>0.75</strong></label>
+              <input class="form-range" type="range" min="0" max="1" step="0.05" value="0.75">
+            </div>
+          </div>
+          <button class="btn-primary mt-16" data-i18n="save">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SCREEN: ME / SETTINGS ===== -->
+    <div class="screen" id="screen-me">
+      <div class="me-body">
+        <!-- Profile -->
+        <div class="me-profile fade-up">
+          <div class="me-avatar"><video autoplay loop muted playsinline class="me-avatar-video"><source src="landing_dori_hi.webm" type="video/webm"></video></div>
+          <div class="me-info">
+            <div class="me-name">DClaw</div>
+            <div class="me-version">v0.1.0b3</div>
+          </div>
+        </div>
+
+        <!-- Settings Groups -->
+        <div class="settings-group fade-up d1">
+          <div class="settings-row" onclick="showAccountPage()">
+            <div class="settings-row-icon" style="background:#E0E7FF"><span class="material-symbols-outlined" style="color:#6366F1">person</span></div>
+            <span class="settings-row-text" data-i18n="accountSettings">帳戶设置</span>
+            <span class="settings-row-arrow"><span class="material-symbols-outlined">chevron_right</span></span>
+          </div>
+        </div>
+
+        <div class="settings-group fade-up d2">
+          <div class="settings-row">
+            <div class="settings-row-icon" style="background:#F5F3FF"><span class="material-symbols-outlined" style="color:#8B5CF6">smart_toy</span></div>
+            <span class="settings-row-text" data-i18n="agentMgmt">Agent 管理</span>
+            <span class="settings-row-arrow"><span class="material-symbols-outlined">chevron_right</span></span>
+          </div>
+          <div class="settings-row" onclick="showProvidersPage()">
+            <div class="settings-row-icon" style="background:#DBEAFE"><span class="material-symbols-outlined" style="color:#3B82F6">model_training</span></div>
+            <span class="settings-row-text" data-i18n="models">模型</span>
+            <span class="settings-row-val provider-active-badge"><span class="provider-active-dot"></span>DGrid</span>
+            <span class="settings-row-arrow"><span class="material-symbols-outlined">chevron_right</span></span>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-icon" style="background:#DCFCE7"><span class="material-symbols-outlined" style="color:#22C55E">tune</span></div>
+            <span class="settings-row-text" data-i18n="environments">環境變量</span>
+            <span class="settings-row-arrow"><span class="material-symbols-outlined">chevron_right</span></span>
+          </div>
+        </div>
+
+        <div class="settings-group fade-up d3">
+          <div class="settings-row">
+            <div class="settings-row-icon" style="background:#FEF3C7"><span class="material-symbols-outlined" style="color:#F59E0B">shield</span></div>
+            <span class="settings-row-text" data-i18n="security">安全</span>
+            <span class="settings-row-arrow"><span class="material-symbols-outlined">chevron_right</span></span>
+          </div>
+          <div class="settings-row" onclick="showTokenUsagePage()">
+            <div class="settings-row-icon" style="background:#FCE7F3"><span class="material-symbols-outlined" style="color:#EC4899">bar_chart</span></div>
+            <span class="settings-row-text" data-i18n="tokenUsage">Token 用量</span>
+            <span class="settings-row-arrow"><span class="material-symbols-outlined">chevron_right</span></span>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-icon" style="background:#E0E7FF"><span class="material-symbols-outlined" style="color:#6366F1">mic</span></div>
+            <span class="settings-row-text" data-i18n="voiceTranscription">語音轉寫</span>
+            <span class="settings-row-arrow"><span class="material-symbols-outlined">chevron_right</span></span>
+          </div>
+        </div>
+
+        <div class="settings-group fade-up d4">
+          <div class="settings-row" onclick="showLanguagePicker()">
+            <div class="settings-row-icon" style="background:#F0FDF4"><span class="material-symbols-outlined" style="color:#22C55E">translate</span></div>
+            <span class="settings-row-text" data-i18n="language">語言</span>
+            <span class="settings-row-val" id="currentLangLabel">繁體中文</span>
+            <span class="material-symbols-outlined settings-row-arrow">chevron_right</span>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+    </div><!-- end screens-wrap -->
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="nav-item active" data-screen="screen-dclaw" onclick="goScreen('screen-dclaw')">
+        <span class="material-symbols-outlined">smart_toy</span>
+        <span data-i18n="tabDClaw">DClaw</span>
+      </button>
+      <button class="nav-item" data-screen="screen-control" onclick="goScreen('screen-control')">
+        <span class="material-symbols-outlined">settings_remote</span>
+        <span data-i18n="tabControl">Control</span>
+      </button>
+      <button class="nav-item" data-screen="screen-agent" onclick="goScreen('screen-agent')">
+        <span class="material-symbols-outlined">memory</span>
+        <span data-i18n="tabAgent">Agent</span>
+      </button>
+      <button class="nav-item" data-screen="screen-me" onclick="goScreen('screen-me')">
+        <span class="material-symbols-outlined">person</span>
+        <span data-i18n="tabMe">Me</span>
+      </button>
+    </nav>
+
+    <!-- Account Settings Page (secondary) -->
+    <div class="secondary-page" id="accountPage">
+      <div class="secondary-header">
+        <button class="back-btn" onclick="hideAccountPage()">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <span class="secondary-title">Account Settings</span>
+      </div>
+      <div class="secondary-body">
+        <div class="account-section fade-up">
+          <div class="account-avatar">
+            <video autoplay loop muted playsinline class="account-avatar-video"><source src="landing_dori_hi.webm" type="video/webm"></video>
+          </div>
+          <div class="account-label">Wallet Address</div>
+          <div class="account-wallet-box">
+            <span class="account-wallet-addr" id="walletAddr">0x7a3b...f42d</span>
+            <button class="account-copy-btn" onclick="copyWallet()">
+              <span class="material-symbols-outlined" style="font-size:16px">content_copy</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="account-section fade-up d1">
+          <div class="account-info-row">
+            <span class="account-info-label">Network</span>
+            <span class="account-info-value">BNB Smart Chain</span>
+          </div>
+          <div class="account-info-row">
+            <span class="account-info-label">Connected</span>
+            <span class="account-info-value" style="color:var(--primary)">● Yes</span>
+          </div>
+        </div>
+
+        <button class="logout-btn fade-up d2" onclick="handleLogout()">
+          <span class="material-symbols-outlined" style="font-size:18px">logout</span>
+          Log Out
+        </button>
+      </div>
+    </div>
+
+    <!-- Providers Page (secondary) -->
+    <div class="secondary-page" id="providersPage">
+      <div class="secondary-header">
+        <button class="back-btn" onclick="hideProvidersPage()">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <span class="secondary-title">Providers</span>
+      </div>
+      <div class="secondary-body">
+        <div class="providers-top-row fade-up">
+          <div></div>
+          <button class="add-provider-btn" onclick="showAddProviderModal()">
+            <span class="material-symbols-outlined" style="font-size:16px">add</span>
+            Add
+          </button>
+        </div>
+
+        <div class="provider-grid">
+          <!-- ModelScope -->
+          <div class="provider-card fade-up">
+            <div class="provider-card-header">
+              <div class="provider-name">ModelScope <span class="provider-badge builtin">Built-in</span></div>
+              <div class="provider-status not-ready"><span class="provider-dot"></span> Not Ready</div>
+            </div>
+            <div class="provider-fields">
+              <div class="provider-field"><span class="provider-field-label">Base URL:</span><span class="provider-field-value">https://api-inference.modelscope.cn/v1</span></div>
+              <div class="provider-field"><span class="provider-field-label">API Key:</span><span class="provider-field-value muted">Not set</span></div>
+              <div class="provider-field"><span class="provider-field-label">Model:</span><span class="provider-field-value">2 models</span></div>
+            </div>
+            <div class="provider-card-actions">
+              <button class="provider-action-btn" onclick="showModelMgmtModal(this)"><span class="material-symbols-outlined" style="font-size:14px">apps</span> Models</button>
+              <button class="provider-action-btn"><span class="material-symbols-outlined" style="font-size:14px">edit</span> Settings</button>
+            </div>
+          </div>
+
+          <!-- DashScope (active) -->
+          <div class="provider-card active fade-up d1">
+            <div class="provider-card-header">
+              <div class="provider-name">DashScope <span class="provider-badge builtin">Built-in</span></div>
+              <div class="provider-status ready"><span class="provider-dot"></span> Ready (with models)</div>
+            </div>
+            <div class="provider-fields">
+              <div class="provider-field"><span class="provider-field-label">Base URL:</span><span class="provider-field-value">https://dashscope.aliyuncs.com/compatible-mode/v1</span></div>
+              <div class="provider-field"><span class="provider-field-label">API Key:</span><span class="provider-field-value">sk******</span></div>
+              <div class="provider-field"><span class="provider-field-label">Model:</span><span class="provider-field-value">3 models</span></div>
+            </div>
+            <div class="provider-card-actions">
+              <button class="provider-action-btn" onclick="showModelMgmtModal(this)"><span class="material-symbols-outlined" style="font-size:14px">apps</span> Models</button>
+              <button class="provider-action-btn"><span class="material-symbols-outlined" style="font-size:14px">edit</span> Settings</button>
+            </div>
+          </div>
+
+          <!-- Aliyun Coding Plan -->
+          <div class="provider-card fade-up d2">
+            <div class="provider-card-header">
+              <div class="provider-name">Aliyun Coding Plan <span class="provider-badge builtin">Built-in</span></div>
+              <div class="provider-status not-ready"><span class="provider-dot"></span> Not Ready</div>
+            </div>
+            <div class="provider-fields">
+              <div class="provider-field"><span class="provider-field-label">Base URL:</span><span class="provider-field-value">https://coding.dashscope.aliyuncs.com/v1</span></div>
+              <div class="provider-field"><span class="provider-field-label">API Key:</span><span class="provider-field-value muted">Not set</span></div>
+              <div class="provider-field"><span class="provider-field-label">Model:</span><span class="provider-field-value">8 models</span></div>
+            </div>
+            <div class="provider-card-actions">
+              <button class="provider-action-btn" onclick="showModelMgmtModal(this)"><span class="material-symbols-outlined" style="font-size:14px">apps</span> Models</button>
+              <button class="provider-action-btn"><span class="material-symbols-outlined" style="font-size:14px">edit</span> Settings</button>
+            </div>
+          </div>
+
+          <!-- OpenAI -->
+          <div class="provider-card fade-up d3">
+            <div class="provider-card-header">
+              <div class="provider-name">OpenAI <span class="provider-badge builtin">Built-in</span></div>
+              <div class="provider-status not-ready"><span class="provider-dot"></span> Not Ready</div>
+            </div>
+            <div class="provider-fields">
+              <div class="provider-field"><span class="provider-field-label">Base URL:</span><span class="provider-field-value">https://api.openai.com/v1</span></div>
+              <div class="provider-field"><span class="provider-field-label">API Key:</span><span class="provider-field-value muted">Not set</span></div>
+              <div class="provider-field"><span class="provider-field-label">Model:</span><span class="provider-field-value">11 models</span></div>
+            </div>
+            <div class="provider-card-actions">
+              <button class="provider-action-btn" onclick="showModelMgmtModal(this)"><span class="material-symbols-outlined" style="font-size:14px">apps</span> Models</button>
+              <button class="provider-action-btn"><span class="material-symbols-outlined" style="font-size:14px">edit</span> Settings</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Token Usage Page (secondary) -->
+    <div class="secondary-page" id="tokenUsagePage">
+      <div class="secondary-header">
+        <button class="back-btn" onclick="hideTokenUsagePage()">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <span class="secondary-title">Token Usage</span>
+      </div>
+      <div class="secondary-body">
+        <p class="token-usage-subtitle fade-up">View LLM token consumption over time, by date and model.</p>
+
+        <div class="token-date-bar fade-up">
+          <div class="token-date-range">
+            <span>2026-02-22</span>
+            <span class="token-date-arrow">→</span>
+            <span>2026-03-24</span>
+            <span class="material-symbols-outlined" style="font-size:16px;color:var(--text-2)">calendar_today</span>
+          </div>
+          <button class="token-refresh-btn">Refresh</button>
+        </div>
+
+        <div class="token-summary-row fade-up d1">
+          <div class="token-summary-card">
+            <div class="token-summary-value">196.1K</div>
+            <div class="token-summary-label">Prompt Tokens</div>
+          </div>
+          <div class="token-summary-card">
+            <div class="token-summary-value">2.5K</div>
+            <div class="token-summary-label">Completion Tokens</div>
+          </div>
+        </div>
+
+        <!-- By Model -->
+        <div class="token-table-section fade-up d2">
+          <h4 class="token-table-title">By Model</h4>
+          <div class="token-table-wrap">
+            <table class="token-table">
+              <thead>
+                <tr><th>Provider</th><th>Model</th><th>Prompt Tokens</th><th>Completion Tokens</th><th>Total Calls</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>dgrid_test</td><td>moonshotai/kimi-k2.5</td><td>196.1K</td><td>2.5K</td><td>35</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- By Date -->
+        <div class="token-table-section fade-up d3">
+          <h4 class="token-table-title">By Date</h4>
+          <div class="token-table-wrap">
+            <table class="token-table">
+              <thead>
+                <tr><th>Date</th><th>Prompt Tokens</th><th>Completion Tokens</th><th>Total Calls</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-03-18</td><td>3.8K</td><td>228</td><td>1</td></tr>
+                <tr><td>2026-03-19</td><td>188K</td><td>2.3K</td><td>33</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Custom Provider Modal -->
+    <div class="modal-overlay" id="addProviderOverlay" onclick="if(event.target===this)hideAddProviderModal()">
+      <div class="modal-sheet" id="addProviderModal">
+        <div class="modal-header">
+          <h3 class="modal-title">Add Custom Provider</h3>
+          <button class="modal-close" onclick="hideAddProviderModal()"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Provider ID <span class="required">*</span></label>
+            <input type="text" class="form-input" placeholder="e.g. openai, google, anthropic">
+            <p class="form-hint">Lowercase letters, digits, hyphens, underscores. Cannot be changed later.</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Display Name <span class="required">*</span></label>
+            <input type="text" class="form-input" placeholder="e.g. OpenAI, Google Gemini">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Default Base URL</label>
+            <input type="text" class="form-input" placeholder="e.g. https://api.example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Protocol <span class="required">*</span></label>
+            <select class="form-select">
+              <option>OpenAI-compatible (Chat Completions)</option>
+              <option>Anthropic Messages API</option>
+              <option>Google Gemini API</option>
+            </select>
+            <p class="form-hint">Choose the provider API protocol for this configuration.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn-secondary" onclick="hideAddProviderModal()">Cancel</button>
+          <button class="modal-btn-primary">Create</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Model Management Modal -->
+    <div class="modal-overlay" id="modelMgmtOverlay" onclick="if(event.target===this)hideModelMgmtModal()">
+      <div class="modal-sheet" id="modelMgmtModal">
+        <div class="modal-header">
+          <h3 class="modal-title" id="modelMgmtTitle">DGrid AI — Model Management</h3>
+          <button class="modal-close" onclick="hideModelMgmtModal()"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="model-list">
+            <div class="model-item">
+              <div class="model-item-info">
+                <div class="model-item-name">moonshotai/kimi-k2.5</div>
+                <div class="model-item-id">moonshotai/kimi-k2.5</div>
+              </div>
+              <span class="model-item-badge user-added">User-added</span>
+              <button class="model-item-action test"><span class="material-symbols-outlined" style="font-size:14px">rocket_launch</span> Test Connection</button>
+              <button class="model-item-action delete"><span class="material-symbols-outlined" style="font-size:16px;color:#EF4444">delete</span></button>
+            </div>
+          </div>
+          <div class="model-actions-row">
+            <button class="model-action-btn dashed"><span class="material-symbols-outlined" style="font-size:16px">sync</span> Discover Models</button>
+            <button class="model-action-btn dashed" onclick="toggleAddModelForm()"><span class="material-symbols-outlined" style="font-size:16px">add</span> Add Model</button>
+          </div>
+          <!-- Add Model inline form -->
+          <div class="add-model-form" id="addModelForm">
+            <div class="form-group">
+              <label class="form-label">Model ID <span class="required">*</span></label>
+              <input type="text" class="form-input" placeholder="e.g. gpt-4o, gemini-2.0-flash" id="addModelId">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">Model Name</label>
+              <input type="text" class="form-input" placeholder="e.g. GPT-4o, Gemini 2.0 Flash" id="addModelName">
+            </div>
+            <div class="add-model-form-actions">
+              <button class="modal-btn-secondary" onclick="toggleAddModelForm()">Cancel</button>
+              <button class="modal-btn-primary">Add Model</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="justify-content:flex-start">
+          <button class="modal-btn-secondary" onclick="hideModelMgmtModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Channel Settings Modal -->
+    <div class="modal-overlay" id="channelModal" onclick="closeChannelModal(event)">
+      <div class="modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="modal-title" id="channelModalTitle">DingTalk Settings</span>
+            <a class="modal-doc-link" id="channelDocLink" href="#" target="_blank">
+              <span class="material-symbols-outlined" style="font-size:14px">link</span>
+              <span id="channelDocText">Doc</span>
+            </a>
+          </div>
+          <button class="modal-close" onclick="closeChannelModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label class="modal-label">Enabled</label>
+            <div class="toggle-switch" id="chSettingEnabled" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Bot Prefix</label>
+            <input class="modal-input" id="chSettingPrefix" placeholder="@bot" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Show Tool Messages <span class="modal-info-icon">ⓘ</span></label>
+            <div class="toggle-switch on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Show Thinking <span class="modal-info-icon">ⓘ</span></label>
+            <div class="toggle-switch on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Client ID</label>
+            <input class="modal-input" id="chSettingClientId" placeholder="" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Client Secret</label>
+            <div style="position:relative">
+              <input class="modal-input" id="chSettingSecret" type="password" placeholder="" />
+              <span class="modal-eye" onclick="togglePassword(this)">
+                <span class="material-symbols-outlined" style="font-size:18px">visibility_off</span>
+              </span>
+            </div>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Message Type <span class="modal-info-icon">ⓘ</span></label>
+            <select class="modal-select">
+              <option>markdown</option>
+              <option>text</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">DM Policy <span class="modal-info-icon">ⓘ</span></label>
+            <select class="modal-select">
+              <option>Open</option>
+              <option>Closed</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Group Policy <span class="modal-info-icon">ⓘ</span></label>
+            <select class="modal-select">
+              <option>Open</option>
+              <option>Closed</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Require @Mention <span class="modal-info-icon">ⓘ</span></label>
+            <div class="toggle-switch" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Allowlist Users <span class="modal-info-icon">ⓘ</span></label>
+            <input class="modal-input" placeholder="Enter user ID and press Enter to add" />
+          </div>
+          <div class="modal-actions">
+            <button class="modal-btn cancel" onclick="closeChannelModal()">Cancel</button>
+            <button class="modal-btn save" onclick="closeChannelModal()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Session Edit Modal -->
+    <div class="modal-overlay" id="sessionModal" onclick="closeSessionModal(event)">
+      <div class="modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <span class="modal-title">Edit Session</span>
+          <button class="modal-close" onclick="closeSessionModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label class="modal-label">name</label>
+            <input class="modal-input" id="modalSessionName" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">id</label>
+            <input class="modal-input readonly" id="modalSessionId" readonly />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">session_id</label>
+            <input class="modal-input readonly" id="modalSessionSid" readonly />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">user_id</label>
+            <input class="modal-input readonly" id="modalSessionUid" readonly />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">channel</label>
+            <input class="modal-input readonly" id="modalSessionChannel" readonly />
+          </div>
+          <div class="modal-actions">
+            <button class="modal-btn cancel" onclick="closeSessionModal()">Cancel</button>
+            <button class="modal-btn save" onclick="closeSessionModal()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Import Skill Modal -->
+    <div class="modal-overlay" id="importSkillModal" onclick="closeModal('importSkillModal', event)">
+      <div class="modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <span class="modal-title">Import Skill</span>
+          <button class="modal-close" onclick="closeModal('importSkillModal')">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label class="modal-label" style="font-size:14px;font-weight:700">Currently supported skill URL sources:</label>
+            <ul class="modal-url-list">
+              <li>https://skills.sh/</li>
+              <li>https://clawhub.ai/</li>
+              <li>https://skillsmp.com/</li>
+              <li>https://lobehub.com/</li>
+              <li>https://market.lobehub.com/</li>
+              <li>https://github.com/</li>
+              <li>https://modelscope.cn/skills/</li>
+            </ul>
+          </div>
+          <div class="modal-field">
+            <label class="modal-label" style="font-size:14px;font-weight:700">URL examples:</label>
+            <ul class="modal-url-list muted">
+              <li>https://skills.sh/vercel-labs/skills/find-skills</li>
+              <li>https://lobehub.com/zh/skills/openclaw-skills-cli-developer</li>
+              <li>https://github.com/anthropics/skills/tree/main/skills/skill-creator</li>
+              <li>https://modelscope.cn/skills/@anthropics/skill-creator</li>
+            </ul>
+          </div>
+          <div class="modal-field">
+            <input class="modal-input" placeholder="Enter Skill URL" />
+          </div>
+          <div class="modal-actions">
+            <button class="modal-btn cancel" onclick="closeModal('importSkillModal')">Cancel</button>
+            <button class="modal-btn save">Import Skill</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Skill Modal -->
+    <div class="modal-overlay" id="createSkillModal" onclick="closeModal('createSkillModal', event)">
+      <div class="modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <span class="modal-title">Create Skill</span>
+          <button class="modal-close" onclick="closeModal('createSkillModal')">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label class="modal-label">Name <span style="color:#EF4444">*</span></label>
+            <input class="modal-input" placeholder="e.g., weather_query" />
+          </div>
+          <div class="modal-field">
+            <label class="modal-label">Content <span style="color:#EF4444">*</span></label>
+            <div class="modal-content-header">
+              <span class="modal-content-label">Content</span>
+              <span class="modal-preview-toggle">
+                Preview
+                <span class="modal-toggle-track"><span class="modal-toggle-thumb"></span></span>
+              </span>
+            </div>
+            <textarea class="modal-textarea" rows="10" placeholder="[Format]
+---
+name: skill_name (required, lowercase with underscores)
+description: Brief description (required)
+---
+
+Skill implementation (Markdown format)
+
+[Example]
+---
+name: weather_query
+description: Query weather info for a city
+---"></textarea>
+          </div>
+          <div class="modal-actions" style="justify-content:space-between">
+            <button class="modal-btn ai-optimize">
+              <span class="material-symbols-outlined" style="font-size:16px;vertical-align:-3px">bolt</span>
+              AI Optimize
+            </button>
+            <div style="display:flex;gap:10px">
+              <button class="modal-btn cancel" onclick="closeModal('createSkillModal')">Cancel</button>
+              <button class="modal-btn save">Create</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create MCP Client Modal -->
+    <div class="modal-overlay" id="createMcpModal" onclick="closeModal('createMcpModal', event)">
+      <div class="modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <span class="modal-title">Create Client</span>
+          <button class="modal-close" onclick="closeModal('createMcpModal')">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label class="modal-label" style="font-size:14px;font-weight:700">Supported formats:</label>
+            <ul class="modal-url-list muted">
+              <li>Standard format: { "mcpServers": { "key": {...} } }</li>
+              <li>Direct format: { "key": {...} }</li>
+              <li>Single format: { "key": "...", "name": "...", "command": "..." }</li>
+            </ul>
+          </div>
+          <div class="modal-field">
+            <textarea class="modal-textarea" rows="14">{
+  "mcpServers": {
+    "example-client": {
+      "command": "npx",
+      "args": ["-y", "@example/mcp-server"],
+      "env": {
+        "API_KEY": "<YOUR_API_KEY>"
+      }
+    }
+  }
+}</textarea>
+          </div>
+          <div class="modal-actions">
+            <button class="modal-btn cancel" onclick="closeModal('createMcpModal')">Cancel</button>
+            <button class="modal-btn save">Create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js?v=14"></script>
+</body>
+
+</html>
